@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">
+    <meta name="author" content="金西振">
+    <title></title>
+    <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.css">
+    <script src="./libs/jquery.js"></script>
+    <script src="./libs/bootstrap/js/bootstrap.js"></script>
+    <script src="./libs/template-web.js"></script>
+    <script src="./libs/layer/layer.js"></script>
+    <style>
+        body{
+            padding-top: 50px;
+        }
+        .header{
+            background-color: #eee;
+            height: 60px;
+            line-height: 60px;
+            font-size: 20px;
+        }
+        .button{
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">学生信息管理系统</a>
+            <ul class="nav navbar-nav">
+                <li><a href="#">首页</a></li>
+                <li  class="active"><a href="#">学生管理</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="header">
+        <div class="container">
+            学生信息管理及查询
+        </div>
+    </header>
+
+
+    <div class="container">
+        <div class="button">
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal">添加</button>
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#searchModal">搜索</button>
+        </div>
+        <!-- 搜索条件的展示 -->
+        <div id="search-list"></div>
+        <!-- 展示学生列表 -->
+        <div id="stu-list"></div>
+        <!-- 页码的展示 -->
+        <div id="page-list"></div>
+    </div>
+
+    <!-- 添加学生信息的模态框 -->
+    <div class="modal fade" id="addModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                    <h4 class="modal-title">添加学生</h4>
+                </div>
+    
+                <div class="modal-body">
+                    <form id="add-form" class="form-horizontal">
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label">姓名：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="username">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="age" class="col-sm-2 control-label">年龄：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="age">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="age" class="col-sm-2 control-label">性别：</label>
+                            <div class="col-sm-10">
+                                <label><input type="radio" name="gender" value="男">男</label>
+                                <label><input type="radio" name="gender" value="女">女</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tel" class="col-sm-2 control-label">手机号：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="tel">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-sm-2 control-label">邮箱：</label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" name="email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="des" class="col-sm-2 control-label">个人介绍：</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" name="des"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="add-btn">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 编辑学生信息模态框 -->
+    <div class="modal fade" id="editModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                    <h4 class="modal-title">编辑学生信息</h4>
+                </div>
+    
+                <div class="modal-body">
+                    <form id="edit-form" class="form-horizontal">
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label">姓名：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="username" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="age" class="col-sm-2 control-label">年龄：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="age">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="age" class="col-sm-2 control-label">性别：</label>
+                            <div class="col-sm-10">
+                                <label><input type="radio" name="gender" id="male" value="男">男</label>
+                                <label><input type="radio" name="gender" id="female" value="女">女</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tel" class="col-sm-2 control-label">手机号：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="tel">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-sm-2 control-label">邮箱：</label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" name="email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="des" class="col-sm-2 control-label">个人介绍：</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" name="des"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="save-btn">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 搜索模态框 -->
+    <div class="modal fade" id="searchModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                    <h4 class="modal-title">搜索</h4>
+                </div>
+    
+                <div class="modal-body">
+                    <form id="search-form" class="form-horizontal">
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label">姓名：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="username">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="age" class="col-sm-2 control-label">年龄：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="age">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="age" class="col-sm-2 control-label">性别：</label>
+                            <div class="col-sm-10">
+                                <label><input type="radio" name="gender" value="男">男</label>
+                                <label><input type="radio" name="gender" value="女">女</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tel" class="col-sm-2 control-label">手机号：</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="tel">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="search-btn">搜索</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/index.js"></script>
+</body>
+</html>
+<!-- 学生信息列表模板 -->
+<script id="stulist-tmp" type="text/html">
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>年龄</th>
+                    <th>性别</th>
+                    <th>手机号</th>
+                    <th>邮箱</th>
+                    <th>编辑</th>
+                    <th>删除</th>
+                </tr>
+            </thead>
+            <tbody>
+            {{each stus stu}}
+                <tr>
+                    <td>{{stu.username}}</td>
+                    <td>{{stu.age}}</td>
+                    <td>{{stu.gender}}</td>
+                    <td>{{stu.tel}}</td>
+                    <td>{{stu.email}}</td>
+                    <td><span id="edit-btn" stuid="{{stu._id}}" class="glyphicon glyphicon-edit"></span></td>
+                    <td><span id="del-btn" stuid="{{stu._id}}" class="glyphicon glyphicon-trash"></span></td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+
+</script>
+<!-- 页码模板 -->
+<script id="page-tmp" type="text/html">
+    <nav>
+        <ul class="pagination">
+            <li id="page-prev" class="<%= current_page==1 ? 'disabled' : '' %>">
+                <a href="#"><span>&laquo;</span></a>
+            </li>
+
+            <% for(var i=0; i<all_pages; i++){ %>
+            <li class="page-index <%= current_page==i+1 ? 'active' : '' %>">
+                <span><%= i+1 %></span>
+            </li>
+            <%}%>
+
+            <li id="page-next" class="<%= current_page==all_pages ? 'disabled' : '' %>">
+                <a href="#"><span>&raquo;</span></a>
+            </li>
+        </ul>
+    </nav>
+</script>
+<!-- 搜索条件列表模板 -->
+<script id="condition-tmp" type="text/html">
+    {{if username}}
+    <div class="btn-group">
+        <button type="button" class="btn btn-danger">姓名：{{username}}</button>
+        <button type="button" class="btn btn-danger condition-btn" con="username"><span>&times;</span></button>
+    </div>
+    {{/if}}
+    {{if age}}
+    <div class="btn-group">
+        <button type="button" class="btn btn-danger">年龄：{{age}}</button>
+        <button type="button" class="btn btn-danger condition-btn"  con="age"><span>&times;</span></button>
+    </div>
+    {{/if}}
+    {{if gender}}
+    <div class="btn-group">
+        <button type="button" class="btn btn-danger">性别：{{gender}}</button>
+        <button type="button" class="btn btn-danger condition-btn"  con="gender"><span>&times;</span></button>
+    </div>
+    {{/if}}
+    {{if tel}}
+    <div class="btn-group">
+        <button type="button" class="btn btn-danger">手机：{{tel}}</button>
+        <button type="button" class="btn btn-danger condition-btn" con="tel"><span>&times;</span></button>
+    </div>
+    {{/if}}
+</script>
